@@ -1,59 +1,136 @@
 <!doctype html>
 <html lang="tr">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aslı · Yağmurun Altında</title>
+<meta name="theme-color" content="#0b0712">
+<title>Aslı Cennet</title>
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:28px 16px;background:#0d0915;color:#f8e8ff;font-family:system-ui,sans-serif}main{width:min(100%,660px);text-align:center}.name{color:#e6a2c7;letter-spacing:.2em}h1{font:italic clamp(28px,6vw,52px)/1.12 Georgia,serif;margin:12px 0 16px}.stage{position:relative;width:min(100%,560px);aspect-ratio:4/3;margin:auto;overflow:hidden;background:radial-gradient(ellipse at 48% 56%,#221330,transparent 67%)}canvas,svg{display:block;position:absolute;inset:0;width:100%;height:100%}.stage[data-ready] svg{visibility:hidden}button{font:inherit;padding:10px 18px;min-height:44px;border:1px solid #b684a5;border-radius:24px;background:transparent;color:inherit;cursor:pointer}button:focus-visible{outline:3px solid #a9caff;outline-offset:4px}button[hidden]{display:none}
+* { box-sizing: border-box; }
+body { margin: 0; color: #f9dff5; background: #0b0712; font-family: Georgia, serif; }
+main { position: relative; display: grid; place-items: center; min-height: 100svh; }
+canvas, .fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
+canvas { display: block; background: radial-gradient(ellipse at 50% 53%, #23132d, #0b0712 72%); }
+.fallback { z-index: 1; display: grid; align-content: center; justify-items: center; gap: 14px; padding: 12px; text-align: center; }
+.fallback h1, .fallback p { margin: 0; font-style: italic; }
+.fallback h1 { font-size: clamp(30px, 8vw, 58px); font-weight: normal; }
+.fallback p { font-size: clamp(18px, 4.6vw, 31px); }
+.fallback svg { width: min(75vw, 58svh, 520px); }
+main[data-ready] .fallback {
+  position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+button {
+  position: absolute; z-index: 2; bottom: max(12px, env(safe-area-inset-bottom));
+  font: 13px system-ui, sans-serif; min-height: 44px; padding: 0 16px;
+  border: 1px solid #cf9cba55; border-radius: 24px; background: #100b18; color: #f5cee7; cursor: pointer;
+}
+button:focus-visible { outline: 2px solid #ecc2fa; outline-offset: 4px; }
+button[hidden] { display: none; }
 </style>
+</head>
+<body>
 <main>
-  <span class="name">ASLI</span>
-  <h1>Yağmurun altında</h1>
-  <div class="stage" role="img" aria-label="Pembe ve mor ışık parçacıklarından oluşan, bir sokak lambasının yanında şemsiye paylaşan iki kişi">
-    <svg viewBox="0 0 480 360" aria-hidden="true">
+  <div class="fallback">
+    <h1>Aslı Cennet</h1>
+    <p>Bana gözlerin bana baktıkça<br>şenlenir yüreğim</p>
+    <svg viewBox="65 51 293 255" role="img" aria-label="Bir sokak lambasının yanında şemsiye paylaşan iki kişi">
       <defs><linearGradient id="rain-color" x2=".15" y2="1"><stop stop-color="#ffacd2"/><stop offset=".57" stop-color="#d4a1ef"/><stop offset="1" stop-color="#8db9ff"/></linearGradient></defs>
-      <path id="silhouette" fill="url(#rain-color)" d="M88 296H106L103 289H100V135L115 105H111L104 87L98 80L94 60L91 80L83 87L76 105H72L88 135V289H84L80 296ZM82 107H87L93 128H89ZM91 107H96V128H94ZM101 107H106L100 128H98ZM162 112Q238 17 334 112Q314 106 293 113Q270 105 250 112L254 173Q259 180 265 171L269 174Q262 187 251 179L247 113Q224 106 207 114Q185 107 162 112ZM179 175Q173 166 178 154Q186 142 199 149Q207 153 208 165L212 171L205 174L202 181L193 182L194 188Q220 185 251 170L258 176Q231 195 209 205L205 239L192 241L199 259L183 279L165 291L154 289L171 273L179 258L166 245L161 269L150 292H138L148 267L151 231L159 204Q140 211 102 185L107 178Q139 195 154 187Q166 179 179 181ZM292 184Q287 174 292 162Q297 152 310 155Q322 158 323 171Q327 185 323 194L316 199Q322 220 335 233L351 257Q329 267 310 266L313 288L326 298L318 301L305 293L298 267L291 287L281 300L269 300L280 292L286 267Q275 268 263 260L277 233L289 207L285 199L275 205L267 200L284 187Z"/>
+      <path id="silhouette" fill="url(#rain-color)" fill-rule="evenodd" d="M88 296H106L103 289H100V135L115 105H111L104 87L98 80L94 60L91 80L83 87L76 105H72L88 135V289H84L80 296ZM82 107H87L93 128H89ZM91 107H96V128H94ZM101 107H106L100 128H98ZM162 112Q238 17 334 112Q314 106 293 113Q270 105 250 112L254 173Q259 180 265 171L269 174Q262 187 251 179L247 113Q224 106 207 114Q185 107 162 112ZM179 175Q173 166 178 154Q186 142 199 149Q207 153 208 165L212 171L205 174L202 181L193 182L194 188Q220 185 251 170L258 176Q231 195 209 205L205 239L192 241L199 259L183 279L165 291L154 289L171 273L179 258L166 245L161 269L150 292H138L148 267L151 231L159 204Q140 211 102 185L107 178Q139 195 154 187Q166 179 179 181ZM292 184Q287 174 292 162Q297 152 310 155Q322 158 323 171Q327 185 323 194L316 199Q322 220 335 233L351 257Q329 267 310 266L313 288L326 298L318 301L305 293L298 267L291 287L281 300L269 300L280 292L286 267Q275 268 263 260L277 233L289 207L285 199L275 205L267 200L284 187Z"/>
     </svg>
-    <canvas width="480" height="360" aria-hidden="true"></canvas>
   </div>
+  <canvas aria-hidden="true"></canvas>
   <button type="button" hidden>Tekrar oynat</button>
 </main>
 <script>
-const stage = document.querySelector('.stage');
+const stage = document.querySelector('main');
 const canvas = stage.querySelector('canvas');
 const context = canvas.getContext('2d');
-const button = document.querySelector('button');
+const button = stage.querySelector('button');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 if (context && typeof Path2D === 'function') {
   const shape = new Path2D(document.querySelector('#silhouette').getAttribute('d'));
-  const colors = ['#ffc2df', '#f5a4cf', '#d7a2f0', '#b69ff5', '#8fbaff'];
-  const particles = [];
-  for (let y = 45; y < 306; y += 1.4) {
-    for (let x = 65; x < 355; x += 1.4) {
-      const endX = x + Math.random();
-      const endY = y + Math.random();
-      if (!context.isPointInPath(shape, endX, endY, 'evenodd')) continue;
-      const angle = Math.random() * Math.PI * 2;
-      const radius = 32 + Math.random() * 170;
-      particles.push({
-        endX, endY,
-        startX: endX + Math.cos(angle) * radius,
-        startY: endY + Math.sin(angle) * radius,
-        delay: Math.random() * .48,
-        color: colors[Math.min(colors.length - 1, Math.floor((endY - 45) / 54))],
-        size: .48 + Math.random() * .91,
-      });
+  const mask = document.createElement('canvas');
+  const ink = mask.getContext('2d', { willReadFrequently: true });
+  const name = stage.querySelector('h1').textContent;
+  const words = [...stage.querySelector('p').childNodes]
+    .filter(node => node.nodeType === Node.TEXT_NODE).map(node => node.textContent.trim());
+  const palette = ['#ffd0e6', '#f7a8d5', '#dba7f2', '#b6a5fb', '#93baff'];
+  let width, height, particles, dust, frame, resizeFrame;
+  let progress = 1;
+
+  function layout() {
+    const bounds = stage.getBoundingClientRect();
+    width = Math.max(1, Math.round(bounds.width));
+    height = Math.max(1, Math.round(bounds.height));
+    const density = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * density);
+    canvas.height = Math.round(height * density);
+    context.setTransform(density, 0, 0, density, 0, 0);
+    mask.width = width;
+    mask.height = height;
+
+    const scale = Math.min(width / 362, height / 480, 1.65);
+    const sceneHeight = 401 * scale;
+    const top = Math.max(8, (height - sceneHeight - 50) / 2);
+    const textEnd = top + 125 * scale;
+    ink.save();
+    ink.translate(width / 2, top);
+    ink.scale(scale, scale);
+    ink.fillStyle = '#fff';
+    ink.textAlign = 'center';
+    ink.textBaseline = 'top';
+    ink.font = 'italic 47px Georgia, serif';
+    ink.fillText(name, 0, 0, 330);
+    ink.font = 'italic 29px Georgia, serif';
+    words.forEach((line, index) => ink.fillText(line, 0, 59 + index * 34, 330));
+    ink.translate(-212, 94);
+    ink.fill(shape, 'evenodd');
+    ink.restore();
+
+    const left = Math.max(0, Math.floor(width / 2 - 175 * scale));
+    const right = Math.min(width, Math.ceil(width / 2 + 175 * scale));
+    const bottom = Math.min(height, Math.ceil(top + sceneHeight));
+    const image = ink.getImageData(left, Math.floor(top), right - left, bottom - Math.floor(top));
+    const step = Math.max(1, Math.round(scale * 1.5));
+    particles = [];
+    for (let y = 0; y < image.height; y += step) {
+      for (let x = 0; x < image.width; x += step) {
+        if (image.data[(y * image.width + x) * 4 + 3] < 125) continue;
+        const endX = left + x + Math.random() * .6;
+        const endY = Math.floor(top) + y + Math.random() * .6;
+        const lettering = endY < textEnd;
+        const colorIndex = lettering
+          ? Math.min(2, Math.floor(y / Math.max(1, 48 * scale)))
+          : Math.min(4, 1 + Math.floor(Math.max(0, endY - textEnd) / Math.max(1, 72 * scale)));
+        particles.push({
+          endX, endY, color: palette[colorIndex],
+          startX: Math.random() * width, startY: Math.random() * height,
+          delay: Math.random() * .32,
+          size: step * (.58 + Math.random() * .54),
+        });
+      }
     }
+    dust = Array.from({ length: Math.min(1500, Math.round(width * height / 700)) }, () => ({
+      x: Math.random() * width, y: Math.random() * height, speed: 14 + Math.random() * 65,
+      opacity: .12 + Math.random() * .32,
+    }));
+    draw(progress);
   }
 
-  let frame;
-  function draw(progress) {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+  function draw(value) {
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = '#ddb7ef';
+    for (const point of dust) {
+      context.globalAlpha = point.opacity;
+      const y = (point.y + point.speed * value) % height;
+      context.fillRect(point.x, y, 1, 1.6);
+    }
     for (const point of particles) {
-      const time = Math.max(0, Math.min(1, (progress - point.delay) / .52));
-      const travel = 1 - (1 - time) ** 3;
-      context.globalAlpha = .24 + travel * .7;
+      const time = Math.max(0, Math.min(1, (value - point.delay) / .57));
+      const travel = time * time * (3 - 2 * time);
+      context.globalAlpha = .17 + travel * .82;
       context.fillStyle = point.color;
       const x = point.startX + (point.endX - point.startX) * travel;
       const y = point.startY + (point.endY - point.startY) * travel;
@@ -64,28 +141,31 @@ if (context && typeof Path2D === 'function') {
 
   function play() {
     cancelAnimationFrame(frame);
-    if (reducedMotion.matches) {
-      draw(1);
-      button.hidden = true;
-      return;
-    }
-    button.hidden = false;
+    button.hidden = reducedMotion.matches;
+    progress = reducedMotion.matches ? 1 : 0;
+    draw(progress);
+    if (reducedMotion.matches) return;
     const start = performance.now();
     function animate(now) {
-      const progress = Math.max(0, Math.min(1, (now - start) / 3000));
+      progress = Math.min(1, (now - start) / 3400);
       draw(progress);
       if (progress < 1) frame = requestAnimationFrame(animate);
     }
-    draw(0);
     frame = requestAnimationFrame(animate);
   }
 
-  if (particles.length) {
+  if (ink) {
+    layout();
     stage.dataset.ready = '';
+    play();
     button.addEventListener('click', play);
     reducedMotion.addEventListener('change', play);
-    play();
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(layout);
+    });
   }
 }
 </script>
+</body>
 </html>
