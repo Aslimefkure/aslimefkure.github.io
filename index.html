@@ -128,7 +128,7 @@ if (context && typeof Path2D === 'function') {
       context.fillRect(point.x, y, 1, 1.6);
     }
     for (const point of particles) {
-      const time = Math.max(0, Math.min(1, (value - point.delay) / .57));
+      const time = Math.max(0, Math.min(1, (value - point.delay) / (1 - point.delay)));
       const travel = time * time * (3 - 2 * time);
       context.globalAlpha = .17 + travel * .82;
       context.fillStyle = point.color;
@@ -147,7 +147,7 @@ if (context && typeof Path2D === 'function') {
     if (reducedMotion.matches) return;
     const start = performance.now();
     function animate(now) {
-      progress = Math.min(1, (now - start) / 3400);
+      progress = Math.min(1, (now - start) / 7000);
       draw(progress);
       if (progress < 1) frame = requestAnimationFrame(animate);
     }
