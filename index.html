@@ -53,12 +53,16 @@
       const replay = stage.querySelector('button');
       const canvas = stage.querySelector('canvas');
       const display = canvas.getContext('2d');
-      if (!display || typeof portrait.decode !== 'function') return;
+      if (!display || typeof Path2D !== 'function' || typeof portrait.decode !== 'function') return;
 
       const motion = matchMedia('(prefers-reduced-motion: reduce)');
+      const outlineStart = 1650;
+      const outlineEnd = 5200;
+      const colorStart = 4950;
       const duration = 7000;
-      const lineDuration = 4470;
-      const colorStart = 4140;
+      const fadeStart = duration + 1800;
+      const fadeDuration = 1200;
+      const cycleDuration = fadeStart + fadeDuration;
       const clamp = value => Math.max(0, Math.min(1, value));
       const blend = (from, to, amount) => from + (to - from) * amount;
       const smooth = value => value * value * (3 - 2 * value);
@@ -151,8 +155,16 @@
             const chance = outlines.data[pixel + 3] / 255;
             if (random() > chance * .92) continue;
             const sweep = clamp(y / height + (x / width - .5) * .14 + (random() - .5) * .043);
-            points.push({ x, y, sweep, drift: (random() - .5) * 35,
-              size: .8 + random() * 2.1, bright: random() < .20 });
+            const arrive = blend(1950, outlineEnd, sweep);
+            const appear = Math.max(0, arrive - blend(1850, 2950, random()));
+            points.push({
+              x, y, arrive, appear,
+              offsetX: blend(-.29, .29, random()),
+              offsetY: blend(-105, 135, random()),
+              arc: (random() - .5) * 41,
+              size: .8 + random() * 2.1,
+              bright: random() < .20,
+            });
           }
         }
 
@@ -183,23 +195,31 @@
           display.drawImage(buffer.canvas, left, top, artWidth, artHeight);
         }
 
-        function drawPoints(front) {
+        function drawPoints() {
           const scale = artHeight / height;
           const luminous = new Path2D();
+          const silver = new Path2D();
           const dim = new Path2D();
           for (const point of points) {
-            const phase = front - point.sweep;
-            if (phase < -.070 || phase > .15) continue;
-            const approach = smooth(clamp((phase + .070) / .094));
-            const brightness = clamp(1 - Math.abs(phase - .014) / .128);
-            const size = Math.max(.5, point.size * scale) * (.55 + brightness * .45);
-            const x = left + (point.x + point.drift * (1 - approach)) * scale;
-            const y = top + (point.y + 19 * (1 - approach)) * scale;
-            const path = point.bright && brightness > .65 ? luminous : dim;
+            if (elapsed < point.appear || elapsed >= point.arrive + 430) continue;
+            const travel = clamp((elapsed - point.appear) / (point.arrive - point.appear));
+            const remaining = 1 - smooth(travel);
+            const entrance = smooth(clamp((elapsed - point.appear) / 620));
+            const settle = smooth(clamp((elapsed - point.arrive) / 430));
+            const brightness = (.24 + entrance * .76) * (1 - settle);
+            const size = Math.max(.5, point.size * scale) * brightness;
+            const targetX = left + point.x * scale;
+            const startX = clamp(targetX / screenWidth + point.offsetX) * screenWidth;
+            const x = blend(targetX, startX, remaining) + Math.sin(travel * Math.PI) * point.arc * scale;
+            const y = top + (point.y + point.offsetY * remaining) * scale;
+            const path = point.bright && travel > .69 && brightness > .64 ? luminous :
+              brightness > .52 ? silver : dim;
             path.rect(x - size / 2, y - size / 2, size, size);
           }
-          display.fillStyle = '#b6e1f1a0';
+          display.fillStyle = '#92bbd271';
           display.fill(dim);
+          display.fillStyle = '#c3e2f2bd';
+          display.fill(silver);
           display.shadowBlur = 6 * Math.max(.7, scale);
           display.shadowColor = '#81dcff';
           display.fillStyle = '#ebfcff';
@@ -210,20 +230,17 @@
         function paint() {
           display.clearRect(0, 0, screenWidth, screenHeight);
           if (elapsed >= duration) {
+            display.globalAlpha = 1 - smooth(clamp((elapsed - fadeStart) / fadeDuration));
             display.drawImage(pigment.canvas, left, top, artWidth, artHeight);
+            display.globalAlpha = 1;
             return;
           }
 
-          const lines = clamp(elapsed / lineDuration);
-          const front = smooth(lines);
-          reveal(ink.canvas, front, .11);
+          const lines = clamp((elapsed - outlineStart) / (outlineEnd - outlineStart));
+          reveal(ink.canvas, lines, .13);
           const color = clamp((elapsed - colorStart) / (duration - colorStart));
           reveal(pigment.canvas, smooth(color), .25);
-          if (elapsed < lineDuration + 340) {
-            display.globalAlpha = 1 - smooth(clamp((elapsed - lineDuration) / 340));
-            drawPoints(front);
-            display.globalAlpha = 1;
-          }
+          if (elapsed < outlineEnd + 430) drawPoints();
         }
 
         function resize() {
@@ -244,9 +261,13 @@
 
         function tick(now) {
           start ??= now;
-          elapsed = Math.min(duration, now - start);
-          paint();
-          frame = elapsed < duration ? requestAnimationFrame(tick) : 0;
+          const time = (now - start) % cycleDuration;
+          const next = time >= duration && time <= fadeStart ? duration : time;
+          if (next !== elapsed) {
+            elapsed = next;
+            paint();
+          }
+          frame = requestAnimationFrame(tick);
         }
 
         function play() {
@@ -258,12 +279,26 @@
           frame = motion.matches ? 0 : requestAnimationFrame(tick);
         }
 
+        function updateMotion() {
+          if (motion.matches || document.hidden) {
+            cancelAnimationFrame(frame);
+            frame = 0;
+            start = undefined;
+            elapsed = duration;
+            replay.disabled = motion.matches;
+            paint();
+            return;
+          }
+          play();
+        }
+
         replay.hidden = false;
         resize();
-        play();
+        updateMotion();
         replay.addEventListener('click', play);
         window.addEventListener('resize', resize);
-        motion.addEventListener('change', play);
+        motion.addEventListener('change', updateMotion);
+        document.addEventListener('visibilitychange', updateMotion);
       }
     })();
   </script>
